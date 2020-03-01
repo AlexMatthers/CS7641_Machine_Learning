@@ -1,7 +1,7 @@
 README FILE
 CS7641 ML - Assignment 2 - Randomized Optimization
 
-From this github () download the contents of the 'RO Project' folder.
+From this github (https://github.com/AlexMatthers/CS7641_Machine_Learning) download the contents of the 'RO Project' folder.
 Ensure that Python 3.8 or higher is installed on the system.
 Ensure that Python is in the system path and callable from the command line.
 Ensure that the mlrose_hiive, numpy, pandas, matplotlib, and sklearn libraries are installed.
