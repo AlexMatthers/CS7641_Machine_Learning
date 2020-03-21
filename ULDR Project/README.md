@@ -1,6 +1,6 @@
 README for Unsupervised Learning and Dimensionality Reduction Project:
 
-Download the folder titled "ULDR Project" from this github link:
+Download the folder titled "ULDR Project" from this github link: https://github.com/AlexMatthers/CS7641_Machine_Learning
 
 Ensure that Python 3.8.0 is installed and that the executable is add to the path.
 Ensure that the following libraries are installed:
