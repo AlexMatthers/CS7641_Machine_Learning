@@ -183,7 +183,7 @@ def handle_dimredux(X, outpath, PCA_cut=0.95, SVD_cut=0.95):
     plt.plot(pca.explained_variance_)
     plt.xlabel('Component')
     plt.ylabel('Eigenvalues')
-    plt.title(f'Distribution of Eigenvalues over PCA components \n Explains {PCA_cut * 100}% of Variance, k={pca.n_components}')
+    plt.title(f'Distribution of Eigenvalues over PCA components \n Explains {PCA_cut * 100}% of Variance, k={len(pca.explained_variance_)}')
     plt.savefig(os.path.join(outpath, 'PCAEigenDist.png'), dpi=400, format='png')
     plt.close()
 
@@ -257,6 +257,21 @@ def handle_dimredux(X, outpath, PCA_cut=0.95, SVD_cut=0.95):
 
     return pcaRes, icaRes, rcaRes, svdRes
 
+def handle_dimredux_vis(data, y):
+    for n, dat in data:
+        fig, ax = plt.subplots()
+        for cl in [0, 1]:
+            mask = cl == y
+            ax.scatter(x=dat[mask][:, 0],
+                       y=dat[mask][:, 1],
+                       alpha=0.5, label=cl)
+        ax.set_xlabel('component_one')
+        ax.set_ylabel('component_two')
+        ax.set_title(f'Projection of {n} Dim. Reduced Data')
+        plt.legend(title='Labels')
+        plt.savefig(os.path.join(outpath, f'Dimredux {n} Projection.png'), dpi=400, format='png')
+        plt.close(fig)
+
 def handle_NN(X, y, outpath, name):
     textOut = open(os.path.join(outpath, f'{name}_ANNresults.txt'), 'w')
     X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.7, random_state=SEED)
@@ -328,7 +343,7 @@ if os.path.exists(OUTFILE):
     if input('Fresh Run? >') == 'y':
         shutil.rmtree(OUTFILE, True)
 
-print('Choose Scaling Method:'
+print('Choose Scaling Method:')
 print('{RobustScaler: "rs", StandardScaler: "ss", QuantileTransformer: "qt"}')
 while True:
     scaler = input('>> ')
@@ -347,7 +362,7 @@ for ds_i, ds in enumerate(DS):
         elif scaler == 'qt':
             scale = QuantileTransformer(n_quantiles=np.min([1000, X.shape[0]]), output_distribution='uniform').fit(X)
         else:
-            raise ValueError, 'Improper scaling method chosen'
+            raise ValueError('Improper scaling method chosen')
         X = scale.transform(X)
         Path(os.path.join(OUTFILE, DSNAMES[ds_i])).mkdir(parents=True, exist_ok=True)
         outpath = os.path.join(OUTFILE, DSNAMES[ds_i])
@@ -387,6 +402,7 @@ for ds_i, ds in enumerate(DS):
             ICARes = np.load(os.path.join(outpath, 'DR_ICA.npy'))
             RCARes = np.load(os.path.join(outpath, 'DR_RCA.npy'))
             SVDRes = np.load(os.path.join(outpath, 'DR_SVD.npy'))
+        handle_dimredux_vis(zip(['PCA', 'ICA', 'RCA', 'SVD'], [PCARes, ICARes, RCARes, SVDRes]), y)
         print('Done.\n\n')
 
         # Part 3 - Cluster on DimRedux'd data
