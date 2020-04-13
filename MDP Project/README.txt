@@ -1,7 +1,7 @@
 README for Markov Decision Processes Project:
 
 Download the folder titled "MDP Project" from this github link:
-<link>
+https://github.com/AlexMatthers/CS7641_Machine_Learning
 
 Ensure that Python 3.8 is installed and added to the path.
 Ensure that the following libraries have been installed:
